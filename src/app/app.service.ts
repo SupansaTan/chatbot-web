@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { TempModel } from './temp.model';
 import { ledModel } from './led.model';
+import { LightModel } from './light.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,15 @@ export class AppService {
     return this.http.get<TempModel>(url)
   }
 
-  toggleLed(status: boolean) {
+  toggleLed(LEDstatus: any) {
     const url = `${this.apiURL}/led`
-    let data = { "led": status.toString() }
-    return this.http.post(url, data)
+    let data = { "led": LEDstatus }
+    const body=JSON.stringify(data)
+    return this.http.post(url, body)
+  }
+  
+  getLight(): Observable<LightModel> {
+    const url = `${this.apiURL}/light`
+    return this.http.get<LightModel>(url)
   }
 }

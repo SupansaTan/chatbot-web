@@ -1,4 +1,5 @@
 import { TempModel } from './temp.model';
+import { LightModel } from './light.model';
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
 
@@ -12,6 +13,8 @@ export class AppComponent {
   title = 'chat-bot';
   openLed: boolean = false
   temp: string = ''
+  light: string = ''
+  LEDstatus: string = ''
 
   constructor(private appService: AppService) {}
 
@@ -29,11 +32,23 @@ export class AppComponent {
 
   toggleLed() {
     this.openLed = !this.openLed
-    this.appService.toggleLed(this.openLed).subscribe(
+    if (this.openLed == true) {
+      this.LEDstatus = "ON"
+    }
+    else { this.LEDstatus = "OFF"}
+    this.appService.toggleLed(this.LEDstatus).subscribe(
       (res) => {
         console.log(res)
       },
       (err) => console.log(err)
+    )
+  }
+
+  getLight(){
+    this.appService.getLight().subscribe(
+      (data: LightModel) => {
+        this.light = data.value
+      }
     )
   }
 }
