@@ -1,0 +1,10 @@
+<div>
+  <h1>Temperature : {{ temp }}</h1>
+</div>
+
+<div>
+  <p>{{ 'LED Status : ' +  openLed }}</p>
+</div>
+
+<button (click)="getTemp()" style="margin: 10px;">get Temperature</button>
+<button (click)="toggleLed()" style="margin: 10px;">Toggle LED</button>
