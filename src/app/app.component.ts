@@ -1,7 +1,7 @@
-import { TempModel } from './temp.model';
-import { LightModel } from './light.model';
+import { TempModel } from './models/temp.model';
+import { LightModel } from './models/light.model';
 import { Component } from '@angular/core';
-import { AppService } from './app.service';
+import { KidBrightService } from './services/kid-bright.service';
 
 @Component({
   selector: 'app-root',
@@ -16,14 +16,14 @@ export class AppComponent {
   light: string = ''
   LEDstatus: string = ''
 
-  constructor(private appService: AppService) {}
+  constructor(private kidBrightService: KidBrightService) {}
 
   ngOnInit(): void {
     this.openLed = false
   }
 
   getTemp() {
-    this.appService.getTemp().subscribe(
+    this.kidBrightService.getTemp().subscribe(
       (data: TempModel) => {
         this.temp = data.value
       }
@@ -35,8 +35,11 @@ export class AppComponent {
     if (this.openLed == true) {
       this.LEDstatus = "ON"
     }
-    else { this.LEDstatus = "OFF"}
-    this.appService.toggleLed(this.LEDstatus).subscribe(
+    else {
+      this.LEDstatus = "OFF"
+    }
+
+    this.kidBrightService.toggleLed(this.LEDstatus).subscribe(
       (res) => {
         console.log(res)
       },
@@ -45,7 +48,7 @@ export class AppComponent {
   }
 
   getLight(){
-    this.appService.getLight().subscribe(
+    this.kidBrightService.getLight().subscribe(
       (data: LightModel) => {
         this.light = data.value
       }
