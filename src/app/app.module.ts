@@ -5,11 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BarComponent } from './components/bar/bar.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BarComponent
+    BarComponent,
+    ChatComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
