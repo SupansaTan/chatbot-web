@@ -1,5 +1,5 @@
 import { TempModel } from './models/temp.model';
-import { LightModel } from './models/light.model';
+import { LightIntensityModel } from './models/light-intensity.model';
 import { Component } from '@angular/core';
 import { KidBrightService } from './services/kid-bright.service';
 
@@ -48,8 +48,8 @@ export class AppComponent {
   }
 
   getLight(){
-    this.kidBrightService.getLight().subscribe(
-      (data: LightModel) => {
+    this.kidBrightService.getLightIntensity().subscribe(
+      (data: LightIntensityModel) => {
         this.light = data.value
       }
     )
