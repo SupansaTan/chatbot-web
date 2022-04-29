@@ -16,6 +16,7 @@ export class MessageComponent implements OnInit, OnDestroy  {
               private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.fetchMessageList()
     this.repollGetMessageService.obs.subscribe(() => this.fetchMessageList())
   }
 
