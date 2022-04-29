@@ -1,16 +1,4 @@
-<div>
-  <h1>Temperature : {{ temp }}</h1>
+<div class="container-md vh-100">
+  <app-bar></app-bar>
+
 </div>
-
-<div>
-  <h1>{{ 'Light Intensity : ' +  light }}</h1>
-</div>
-
-<div>
-  <p>{{ 'LED Status : ' +  LEDstatus }}</p>
-</div>
-
-
-<button (click)="getTemp()" style="margin: 10px;">get Temperature</button>
-<button (click)="getLight()" style="margin: 10px;">get Light Intensity</button>
-<button (click)="toggleLed()" style="margin: 10px;">Toggle LED</button>
