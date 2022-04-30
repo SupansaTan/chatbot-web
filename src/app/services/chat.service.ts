@@ -26,7 +26,7 @@ export class ChatService {
         return this.getTemp()
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
-        this.LEDstatus = !this.LEDstatus
+        this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
         return this.toggleLed()
       }
       else if(chatInput.includes('ความเข้มแสงขณะนี้')) {
@@ -34,7 +34,7 @@ export class ChatService {
       }
     }
     else {
-      this.messageService.setMessage(`คำสั่ง '${chatInput}' ไม่่มีในระบบน้า`)
+      this.messageService.setMessage(`คำสั่ง '${chatInput}' ไม่มีในระบบน้า`)
     }
   }
 
@@ -49,7 +49,6 @@ export class ChatService {
 
   toggleLed() {
     const status = (this.LEDstatus ? "ON":"OFF" )
-
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
         console.log(res)
