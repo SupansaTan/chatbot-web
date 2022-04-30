@@ -30,9 +30,8 @@ export class KidBrightService {
 
   toggleLed(LEDstatus: any) {
     const url = `${environment.kidBrightApi}/led`
-    let data = { "led": LEDstatus }
-    const body = JSON.stringify(data)
-    return this.http.post(url, body)
+    const body = { "led": LEDstatus }
+    return this.http.post(url, JSON.stringify(body))
   }
 
   getLightIntensity(): Observable<LightIntensityModel> {

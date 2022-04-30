@@ -8,6 +8,7 @@ export class MessageService {
 
   constructor() {
     this.msg_list.push('สวัสดีค้าบบ มีอะไรให้เราช่วยเหลือไหม?')
+    this.msg_list.push("พิมพ์ 'คำสั่ง' เพื่อดูคำสั่งทั้งหมด")
   }
 
   getMessageList(): Array<string> {
