@@ -4,26 +4,35 @@ import { LightIntensityModel } from '../models/light-intensity.model';
 import { KidBrightService } from './kid-bright.service';
 import { MessageService } from './message.service';
 import { RepollGetMessageService } from './repoll-get-message.service';
+import { DatetimeModel } from '../models/datetime.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   private LEDstatus: boolean = false
+  TempToSet: number = 34
   keyword: Array<string> = []
 
   constructor(private kidBrightService: KidBrightService,
               private messageService: MessageService,
               private repollGetMessageService: RepollGetMessageService) {
-    this.keyword = ['ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง']
+    this.keyword = ['คำสั่ง','ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง', 'เวลา']
   }
 
   findKeyword(chatInput: string) {
     this.messageService.setMessage('user', chatInput)
 
     if(this.keyword.some(key => chatInput.includes(key))) {
-      if(chatInput.includes('อุณหภูมิขณะนี้')) {
+      if(chatInput.includes('คำสั่ง')) {
+        this.messageService.setMessage('bot', "ตั้งอุณหภูมิ อุณหภูมิขณะนี้ เปิดไฟ ปิดไฟ ความเข้มแสงขณะนี้ นับถอยหลัง เวลา")
+        this.repollGetMessageService.notify()
+      }
+      else if(chatInput.includes('อุณหภูมิขณะนี้')) {
         return this.getTemp()
+      }
+      else if(chatInput.includes('ตั้งอุณหภูมิ')) {
+        return this.setTemp(chatInput)
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
         this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
@@ -31,6 +40,12 @@ export class ChatService {
       }
       else if(chatInput.includes('ความเข้มแสงขณะนี้')) {
         return this.getLightIntensity()
+      }
+      else if(chatInput.includes('นับถอยหลัง')) {
+        return this.setTimer()
+      }
+      else if(chatInput.includes('เวลา')) {
+        return this.getDateTime()
       }
     }
     else {
@@ -65,4 +80,31 @@ export class ChatService {
       }
     )
   }
+
+  setTemp(chatInput: string){
+    console.log('alarm temp');
+    // เหลือเซ็ต this.TempToSet = เลขใน chatInput
+    this.kidBrightService.setTemp(this.TempToSet).subscribe(
+      (res) => {
+        console.log(res)
+        this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย`)
+        this.repollGetMessageService.notify()
+      }
+    )
+  }
+
+  getDateTime(){
+    console.log('get date time');
+    this.kidBrightService.getDatetime().subscribe(
+      (data: DatetimeModel) => {
+        this.messageService.setMessage('bot', `วันเวลาขณะนี้: ${data.datetime}`)
+        this.repollGetMessageService.notify()
+      }
+    )
+  }
+
+  setTimer(){
+    console.log('time stop');
+  }
 }
+
