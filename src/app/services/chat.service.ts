@@ -19,7 +19,7 @@ export class ChatService {
   }
 
   findKeyword(chatInput: string) {
-    this.messageService.setMessage(chatInput)
+    this.messageService.setMessage('user', chatInput)
 
     if(this.keyword.some(key => chatInput.includes(key))) {
       if(chatInput.includes('อุณหภูมิขณะนี้')) {
@@ -34,14 +34,14 @@ export class ChatService {
       }
     }
     else {
-      this.messageService.setMessage(`คำสั่ง '${chatInput}' ไม่มีในระบบน้า`)
+      this.messageService.setMessage('bot', `คำสั่ง '${chatInput}' ไม่มีในระบบน้า`)
     }
   }
 
   getTemp() {
     this.kidBrightService.getTemp().subscribe(
       (data: TempModel) => {
-        this.messageService.setMessage(`อุณหภูมิขณะนี้: ${data.value} °C`)
+        this.messageService.setMessage('bot', `อุณหภูมิขณะนี้: ${data.value} °C`)
         this.repollGetMessageService.notify()
       }
     )
@@ -60,7 +60,7 @@ export class ChatService {
   getLightIntensity(){
     this.kidBrightService.getLightIntensity().subscribe(
       (data: LightIntensityModel) => {
-        this.messageService.setMessage(`ความเข้มแสงขณะนี้: ${data.value} SI`)
+        this.messageService.setMessage('bot', `ความเข้มแสงขณะนี้: ${data.value} SI`)
         this.repollGetMessageService.notify()
       }
     )

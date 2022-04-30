@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'src/app/services/message.service';
 import { RepollGetMessageService } from 'src/app/services/repoll-get-message.service';
+import { MessageModel } from '../../models/message.model';
 
 @Component({
   selector: 'app-message',
@@ -10,7 +11,7 @@ import { RepollGetMessageService } from 'src/app/services/repoll-get-message.ser
 })
 export class MessageComponent implements OnInit, OnDestroy  {
   private repollSubscription: Subscription = new Subscription;
-  msg_list: Array<string> = []
+  msg_list: Array<MessageModel> = []
 
   constructor(private repollGetMessageService: RepollGetMessageService,
               private messageService: MessageService) { }
