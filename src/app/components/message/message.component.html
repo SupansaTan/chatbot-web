@@ -1,7 +1,7 @@
 <div #messageContainer class="h-100" style="overflow-y: auto;">
   <div #messageWrapper *ngFor="let item of msg_list" class="px-2">
     <!-- bot -->
-    <div *ngIf="item.author == 'bot' && item.message != 'คำสั่ง' && !item.type" class="d-flex justify-content-start align-items-center py-2">
+    <div *ngIf="item.author == 'bot' && item.message != 'คำสั่ง' && item.message != 'นับถอยหลัง' && !item.type" class="d-flex justify-content-start align-items-center py-2">
       <div class="rounded-circle bg-blue me-2 px-2 py-1">
         <i class="bi bi-robot text-white"></i>
       </div>
@@ -36,7 +36,20 @@
 
       <div class="bg-lightGrey p-3 rounded-chat">
         <h5 class="text-center">{{ item.type }}</h5>
-        <p class="mb-0 px-3 py-2 bg-white rounded-3">{{ item.message }}</p>
+        <p class="mb-0 px-3 py-2 bg-white rounded-3 text-center">{{ item.message }}</p>
+      </div>
+    </div>
+
+    <!-- bot: set timer card -->
+    <div *ngIf="item.author == 'bot' && item.message == 'นับถอยหลัง' && !item.type" class="d-flex justify-content-start align-items-start py-2">
+      <div class="rounded-circle bg-blue me-2 px-2 py-1">
+        <i class="bi bi-robot text-white"></i>
+      </div>
+
+      <div class="bg-lightGrey p-3 rounded-chat">
+        <h5 class="text-center">ตั้งเวลานับถอยหลัง</h5>
+        <ngb-timepicker [(ngModel)]="time" [seconds]="true"></ngb-timepicker>
+        <button class="btn btn-primary w-100 py-1 rounded-3 mt-2" (click)="setTimer()">ตั้งเวลา</button>
       </div>
     </div>
 

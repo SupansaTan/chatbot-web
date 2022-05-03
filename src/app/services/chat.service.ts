@@ -43,7 +43,7 @@ export class ChatService {
         return this.getLightIntensity()
       }
       else if(chatInput.includes('นับถอยหลัง')) {
-        return this.setTimer(chatInput)
+        this.messageService.setMessage('bot', "นับถอยหลัง")
       }
       else if(chatInput.includes('เวลาขณะนี้')) {
         return this.getDateTime()
@@ -52,6 +52,9 @@ export class ChatService {
     else if(!isNaN(Number(chatInput))) {
       // set temperature
       return this.setTemp(Number(chatInput))
+    }
+    else if(chatInput.includes(':')) {
+      return this.setTimer(chatInput)
     }
     else {
       this.messageService.setMessage('bot', `คำสั่ง '${chatInput}' ไม่มีในระบบน้า`)
@@ -107,7 +110,18 @@ export class ChatService {
 
   setTimer(input: string){
     console.log('time stop');
-    // this.messageService.setMessage('bot', `ตั้งนับเวลาถอยหลัง : ${input}`, 'นับเวลาถอยหลัง')
+    if(input.substring(0, 2) == '00' && input.substring(3,5) == '00') {
+      // seconds only
+      this.messageService.setMessage('bot', `${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+    }
+    else if(input.substring(0, 2) == '00') {
+      // have minutes and seconds (mm:ss)
+      this.messageService.setMessage('bot', `${input.substring(3, 5)} นาที ${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+    }
+    else {
+      // HH:mm:ss
+      this.messageService.setMessage('bot', `${input.substring(0, 2)} ชั่วโมง ${input.substring(3, 5)} นาที ${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+    }
   }
 }
 
