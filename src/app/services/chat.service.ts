@@ -32,7 +32,8 @@ export class ChatService {
         return this.getTemp()
       }
       else if(chatInput.includes('ตั้งอุณหภูมิ')) {
-        return this.setTemp(chatInput)
+        this.messageService.setMessage('bot', "ใส่อุณหภูมิที่ต้องการได้เลย")
+        this.repollGetMessageService.notify()
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
         this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
@@ -47,6 +48,10 @@ export class ChatService {
       else if(chatInput.includes('เวลา')) {
         return this.getDateTime()
       }
+    }
+    else if(!isNaN(Number(chatInput))) {
+      // set temperature
+      return this.setTemp(Number(chatInput))
     }
     else {
       this.messageService.setMessage('bot', `คำสั่ง '${chatInput}' ไม่มีในระบบน้า`)
@@ -81,10 +86,10 @@ export class ChatService {
     )
   }
 
-  setTemp(chatInput: string){
+  setTemp(chatInput: number){
     console.log('alarm temp');
-    // เหลือเซ็ต this.TempToSet = เลขใน chatInput
-    this.kidBrightService.setTemp(this.TempToSet).subscribe(
+
+    this.kidBrightService.setTemp(chatInput).subscribe(
       (res) => {
         console.log(res)
         this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย`)
