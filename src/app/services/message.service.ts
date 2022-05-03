@@ -26,10 +26,19 @@ export class MessageService {
     return this.msg_list
   }
 
-  setMessage(author: string, value: string) {
-    this.msg_list.push({
-      author: author,
-      message: value
-    })
+  setMessage(author: string, value: string, command?: string) {
+    if(command) {
+      this.msg_list.push({
+        author: author,
+        message: value,
+        type: command
+      })
+    }
+    else {
+      this.msg_list.push({
+        author: author,
+        message: value
+      })
+    }
   }
 }

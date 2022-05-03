@@ -43,7 +43,7 @@ export class ChatService {
         return this.getLightIntensity()
       }
       else if(chatInput.includes('นับถอยหลัง')) {
-        return this.setTimer()
+        return this.setTimer(chatInput)
       }
       else if(chatInput.includes('เวลาขณะนี้')) {
         return this.getDateTime()
@@ -61,7 +61,7 @@ export class ChatService {
   getTemp() {
     this.kidBrightService.getTemp().subscribe(
       (data: TempModel) => {
-        this.messageService.setMessage('bot', `อุณหภูมิขณะนี้: ${data.value} °C`)
+        this.messageService.setMessage('bot', `${data.value} °C`, 'อุณหภูมิขณะนี้')
         this.repollGetMessageService.notify()
       }
     )
@@ -71,7 +71,7 @@ export class ChatService {
     const status = (this.LEDstatus ? "ON":"OFF" )
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
-        console.log(res)
+        this.messageService.setMessage('bot', (this.LEDstatus? 'เปิด':'ไฟ')+'ไฟเรียบร้อย', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
         this.repollGetMessageService.notify()
       }
     )
@@ -80,36 +80,34 @@ export class ChatService {
   getLightIntensity(){
     this.kidBrightService.getLightIntensity().subscribe(
       (data: LightIntensityModel) => {
-        this.messageService.setMessage('bot', `ความเข้มแสงขณะนี้: ${data.value} SI`)
+        this.messageService.setMessage('bot', `${data.value} SI`, 'ความเข้มแสงขณะนี้')
         this.repollGetMessageService.notify()
       }
     )
   }
 
   setTemp(chatInput: number){
-    console.log('alarm temp');
-
     this.kidBrightService.setTemp(chatInput).subscribe(
       (res) => {
         console.log(res)
-        this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย`)
+        this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย : ${chatInput} °C`, 'ตั้งอุณหภูมิ')
         this.repollGetMessageService.notify()
       }
     )
   }
 
   getDateTime(){
-    console.log('get date time');
     this.kidBrightService.getDatetime().subscribe(
       (data: DatetimeModel) => {
-        this.messageService.setMessage('bot', `วันเวลาขณะนี้: ${data.datetime}`)
+        this.messageService.setMessage('bot', `${data.datetime}`, 'วันเวลาขณะนี้')
         this.repollGetMessageService.notify()
       }
     )
   }
 
-  setTimer(){
+  setTimer(input: string){
     console.log('time stop');
+    // this.messageService.setMessage('bot', `ตั้งนับเวลาถอยหลัง : ${input}`, 'นับเวลาถอยหลัง')
   }
 }
 
