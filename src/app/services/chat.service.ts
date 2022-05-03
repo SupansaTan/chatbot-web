@@ -17,7 +17,7 @@ export class ChatService {
   constructor(private kidBrightService: KidBrightService,
               private messageService: MessageService,
               private repollGetMessageService: RepollGetMessageService) {
-    this.keyword = ['คำสั่ง','ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง', 'เวลา']
+    this.keyword = ['คำสั่ง','ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง', 'เวลาขณะนี้']
   }
 
   findKeyword(chatInput: string) {
@@ -25,7 +25,7 @@ export class ChatService {
 
     if(this.keyword.some(key => chatInput.includes(key))) {
       if(chatInput.includes('คำสั่ง')) {
-        this.messageService.setMessage('bot', "ตั้งอุณหภูมิ อุณหภูมิขณะนี้ เปิดไฟ ปิดไฟ ความเข้มแสงขณะนี้ นับถอยหลัง เวลา")
+        this.messageService.setMessage('bot', "คำสั่ง")
         this.repollGetMessageService.notify()
       }
       else if(chatInput.includes('อุณหภูมิขณะนี้')) {
@@ -45,7 +45,7 @@ export class ChatService {
       else if(chatInput.includes('นับถอยหลัง')) {
         return this.setTimer()
       }
-      else if(chatInput.includes('เวลา')) {
+      else if(chatInput.includes('เวลาขณะนี้')) {
         return this.getDateTime()
       }
     }

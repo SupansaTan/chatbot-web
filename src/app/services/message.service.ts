@@ -16,6 +16,10 @@ export class MessageService {
       author: 'bot',
       message: "พิมพ์ 'คำสั่ง' เพื่อดูคำสั่งทั้งหมด"
     })
+    this.msg_list.push({
+      author: 'bot',
+      message: "คำสั่ง"
+    })
   }
 
   getMessageList(): Array<MessageModel> {
