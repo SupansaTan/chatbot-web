@@ -1,37 +1,39 @@
-<div *ngFor="let item of msg_list">
-  <!-- bot -->
-  <div *ngIf="item.author == 'bot' && item.message != 'คำสั่ง'" class="d-flex justify-content-start align-items-center py-2">
-    <div class="rounded-circle bg-blue me-2 px-2 py-1">
-      <i class="bi bi-robot text-white"></i>
-    </div>
-    <p class="mb-0 bg-lightGrey px-3 py-2 rounded-leftChat">{{ item.message }}</p>
-  </div>
-
-  <!-- bot: commands card -->
-  <div *ngIf="item.author == 'bot' && item.message == 'คำสั่ง'" class="d-flex justify-content-start align-items-start py-2">
-    <div class="rounded-circle bg-blue me-2 px-2 py-1">
-      <i class="bi bi-robot text-white"></i>
+<div #messageContainer class="h-100" style="overflow-y: auto;">
+  <div #messageWrapper *ngFor="let item of msg_list" class="px-2">
+    <!-- bot -->
+    <div *ngIf="item.author == 'bot' && item.message != 'คำสั่ง'" class="d-flex justify-content-start align-items-center py-2">
+      <div class="rounded-circle bg-blue me-2 px-2 py-1">
+        <i class="bi bi-robot text-white"></i>
+      </div>
+      <p class="mb-0 bg-lightGrey px-3 py-2 rounded-leftChat">{{ item.message }}</p>
     </div>
 
-    <div class="bg-lightGrey p-3 rounded-chat col-10 col-md-6 col-lg-4">
-      <h5 class="text-center">คำสั่งทั้งหมด</h5>
+    <!-- bot: commands card -->
+    <div *ngIf="item.author == 'bot' && item.message == 'คำสั่ง'" class="d-flex justify-content-start align-items-start py-2">
+      <div class="rounded-circle bg-blue me-2 px-2 py-1">
+        <i class="bi bi-robot text-white"></i>
+      </div>
 
-      <div class="row row-cols-2 g-2">
-        <div *ngFor="let item of commands" class="col">
-          <button class="btn bg-white p-2 h-100 w-100 rounded-3" (click)="commandBtn(item.title)">
-            <i [ngClass]="'text-blue fs-3 bi ' + item.icon"></i>
-            <p class="mb-0">{{ item.title }}</p>
-          </button>
+      <div class="bg-lightGrey p-3 rounded-chat col-10 col-md-6 col-lg-4">
+        <h5 class="text-center">คำสั่งทั้งหมด</h5>
+
+        <div class="row row-cols-2 g-2">
+          <div *ngFor="let item of commands" class="col">
+            <button class="btn bg-white p-2 h-100 w-100 rounded-3" (click)="commandBtn(item.title)">
+              <i [ngClass]="'text-blue fs-3 bi ' + item.icon"></i>
+              <p class="mb-0">{{ item.title }}</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- user -->
-  <div *ngIf="item.author == 'user'" class="d-flex justify-content-end align-items-center py-2">
-    <p class="mb-0 me-2 bg-lightGrey px-3 py-2 rounded-rightChat">{{ item.message }}</p>
-    <div class="rounded-circle bg-blue me-2 px-2 py-1">
-      <i class="bi bi-person-fill text-white rounded-rightChat"></i>
+    <!-- user -->
+    <div *ngIf="item.author == 'user'" class="d-flex justify-content-end align-items-center py-2">
+      <p class="mb-0 me-2 bg-lightGrey px-3 py-2 rounded-rightChat">{{ item.message }}</p>
+      <div class="rounded-circle bg-blue me-2 px-2 py-1">
+        <i class="bi bi-person-fill text-white rounded-rightChat"></i>
+      </div>
     </div>
   </div>
 </div>
