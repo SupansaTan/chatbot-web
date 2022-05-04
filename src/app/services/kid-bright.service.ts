@@ -5,7 +5,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { TempModel } from '../models/temp.model';
-import { ledModel } from '../models/led.model';
 import { LightIntensityModel } from '../models/light-intensity.model';
 import { environment } from 'src/environments/environment';
 
@@ -28,7 +27,7 @@ export class KidBrightService {
     return this.http.post(url, JSON.stringify(body))
   }
 
-  toggleLed(LEDstatus: any) {
+  toggleLed(LEDstatus: String) {
     const url = `${environment.kidBrightApi}/led`
     const body = { "led": LEDstatus }
     return this.http.post(url, JSON.stringify(body))

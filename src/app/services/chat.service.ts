@@ -11,7 +11,6 @@ import { DatetimeModel } from '../models/datetime.model';
 })
 export class ChatService {
   private LEDstatus: boolean = false
-  TempToSet: number = 34
   keyword: Array<string> = []
 
   constructor(private kidBrightService: KidBrightService,
@@ -36,8 +35,23 @@ export class ChatService {
         this.repollGetMessageService.notify()
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
-        this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
-        return this.toggleLed()
+        if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
+          this.messageService.setMessage('bot', 'ไฟเปิดอยู่แล้ว', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+          this.repollGetMessageService.notify()
+        } 
+        else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
+          this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
+          return this.toggleLed()
+        }
+        else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
+          this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
+          return this.toggleLed()
+        } 
+        else{
+          this.messageService.setMessage('bot', 'ไฟปิดอยู่แล้ว', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+          this.repollGetMessageService.notify()
+        }
+        
       }
       else if(chatInput.includes('ความเข้มแสงขณะนี้')) {
         return this.getLightIntensity()
@@ -89,11 +103,11 @@ export class ChatService {
     )
   }
 
-  setTemp(chatInput: number){
-    this.kidBrightService.setTemp(chatInput).subscribe(
+  setTemp(tempInput: number){
+    this.kidBrightService.setTemp(tempInput).subscribe(
       (res) => {
         console.log(res)
-        this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย : ${chatInput} °C`, 'ตั้งอุณหภูมิ')
+        this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย : ${tempInput} °C`, 'ตั้งอุณหภูมิ')
         this.repollGetMessageService.notify()
       }
     )
