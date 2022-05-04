@@ -74,7 +74,7 @@ export class ChatService {
     const status = (this.LEDstatus ? "ON":"OFF" )
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
-        this.messageService.setMessage('bot', (this.LEDstatus? 'เปิด':'ไฟ')+'ไฟเรียบร้อย', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+        this.messageService.setMessage('bot', (this.LEDstatus? 'เปิด':'ปิด')+'ไฟเรียบร้อย', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
         this.repollGetMessageService.notify()
       }
     )
@@ -83,7 +83,7 @@ export class ChatService {
   getLightIntensity(){
     this.kidBrightService.getLightIntensity().subscribe(
       (data: LightIntensityModel) => {
-        this.messageService.setMessage('bot', `${data.value} SI`, 'ความเข้มแสงขณะนี้')
+        this.messageService.setMessage('bot', `${data.value} cd`, 'ความเข้มแสงขณะนี้')
         this.repollGetMessageService.notify()
       }
     )
