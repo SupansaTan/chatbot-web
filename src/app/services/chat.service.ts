@@ -123,19 +123,34 @@ export class ChatService {
   }
 
   setTimer(input: string){
-    console.log('time stop');
-    if(input.substring(0, 2) == '00' && input.substring(3,5) == '00') {
+    console.log('timer')
+    let hour,min,sec,time: number = 0
+    let message: string
+    hour = Number(input.substring(0, 2))
+    min = Number(input.substring(3, 5))
+    sec = Number(input.substring(6, 8))
+    if(hour == 0 && min == 0) {
       // seconds only
-      this.messageService.setMessage('bot', `${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+      time = sec
+      message = `${sec} วินาที`
     }
-    else if(input.substring(0, 2) == '00') {
+    else if(hour == 0) {
       // have minutes and seconds (mm:ss)
-      this.messageService.setMessage('bot', `${input.substring(3, 5)} นาที ${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+      time = (min*60) + sec 
+      message = `${min} นาที ${sec} วินาที`
     }
     else {
       // HH:mm:ss
-      this.messageService.setMessage('bot', `${input.substring(0, 2)} ชั่วโมง ${input.substring(3, 5)} นาที ${input.substring(6, 8)} วินาที`, 'ตั้งนับเวลาถอยหลัง')
+      time = (hour*3600) + (min*60) + sec 
+      message = `${hour} ชั่วโมง ${min} นาที ${sec} วินาที`
     }
+    this.kidBrightService.setTimer(time).subscribe(
+      (res) => {
+        console.log(res)
+        this.messageService.setMessage('bot', message, 'ตั้งนับเวลาถอยหลัง')
+        this.repollGetMessageService.notify()
+      }
+    )
   }
 }
 

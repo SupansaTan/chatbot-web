@@ -49,9 +49,9 @@ export class KidBrightService {
     return this.http.post(url, JSON.stringify(body))
   }
 
-  setTimer(count: number) {
+  setTimer(second: number) {
     const url = `${environment.kidBrightApi}/timer`
-    const body = { "timer": count }
+    const body = { "time": second }
     return this.http.post(url, JSON.stringify(body))
   }
 }
