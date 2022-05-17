@@ -41,12 +41,10 @@ export class ChatService {
           this.repollGetMessageService.notify()
         }
         else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
-          this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
-          return this.toggleLed()
+          return this.toggleLed(true)
         }
         else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
-          this.LEDstatus = (chatInput.includes('เปิดไฟ') ? true:false )
-          return this.toggleLed()
+          return this.toggleLed(false)
         }
         else{
           this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
@@ -92,11 +90,12 @@ export class ChatService {
     )
   }
 
-  toggleLed() {
-    const status = (this.LEDstatus ? "ON":"OFF" )
+  toggleLed(setStatus: boolean) {
+    const status = (setStatus ? "ON":"OFF" )
     this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
+        this.LEDstatus = !this.LEDstatus
         this.messageService.popMessage()
         this.messageService.setMessage('bot', (this.LEDstatus? 'เปิด':'ปิด')+'ไฟเรียบร้อย', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
       },
