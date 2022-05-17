@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bar.component.scss']
 })
 export class BarComponent implements OnInit {
-  title: string = 'KidBright Bot'
+  title: string = 'Bot for Control KidBright'
 
   constructor() { }
 
