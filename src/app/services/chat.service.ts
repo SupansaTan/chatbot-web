@@ -76,11 +76,14 @@ export class ChatService {
   }
 
   getTemp() {
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.getTemp().subscribe(
       (data: TempModel) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', `${data.value} °C`, 'อุณหภูมิขณะนี้')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.getTempFailed)
       },
       () => {
@@ -91,11 +94,14 @@ export class ChatService {
 
   toggleLed() {
     const status = (this.LEDstatus ? "ON":"OFF" )
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', (this.LEDstatus? 'เปิด':'ปิด')+'ไฟเรียบร้อย', this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', 'อ๊ะ เกิดข้อผิดพลาดในการ' +(this.LEDstatus? 'เปิด':'ปิด')+ 'ไฟ กรุณาลองใหม่อีกครั้งในภายหลัง')
       },
       () => {
@@ -105,11 +111,14 @@ export class ChatService {
   }
 
   getLightIntensity(){
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.getLightIntensity().subscribe(
       (data: LightIntensityModel) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', `${data.value} cd`, 'ความเข้มแสงขณะนี้')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.getLightIntensityFailed)
       },
       () => {
@@ -119,11 +128,14 @@ export class ChatService {
   }
 
   setTemp(tempInput: number){
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.setTemp(tempInput).subscribe(
       (res) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', `ตั้งแจ้งเตือนอุณหภูมิเรียบร้อย : ${tempInput} °C`, 'ตั้งอุณหภูมิ')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.setTempFailed)
       },
       () => {
@@ -133,11 +145,14 @@ export class ChatService {
   }
 
   getDateTime(){
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.getDatetime().subscribe(
       (data: DatetimeModel) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', `${data.datetime}`, 'วันเวลาขณะนี้')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.getDateTimeFailed)
       },
       () => {
@@ -147,6 +162,7 @@ export class ChatService {
   }
 
   setTimer(input: string){
+    this.messageService.setMessage('bot', 'loading')
     let hour,min,sec,time: number = 0
     let message: string
     hour = Number(input.substring(0, 2))
@@ -170,9 +186,11 @@ export class ChatService {
 
     this.kidBrightService.setTimer(time).subscribe(
       (res) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', message, 'ตั้งนับเวลาถอยหลัง')
       },
       (err) => {
+        this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.setTimerFailed)
       },
       () => {

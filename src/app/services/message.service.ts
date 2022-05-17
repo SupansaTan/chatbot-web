@@ -41,4 +41,8 @@ export class MessageService {
       })
     }
   }
+
+  popMessage() {
+    this.msg_list.pop()
+  }
 }
