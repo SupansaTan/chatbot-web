@@ -37,21 +37,7 @@ export class ChatService {
         this.repollGetMessageService.notify()
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
-        this.getLedStatus(chatInput)
-        // if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
-        //   this.messageService.setMessage('bot', BotMessage.LightIsOn, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
-        //   this.repollGetMessageService.notify()
-        // }
-        // else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
-        //   return this.toggleLed("ON")
-        // }
-        // else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
-        //   return this.toggleLed("OFF")
-        // }
-        // else{
-        //   this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
-        //   this.repollGetMessageService.notify()
-        // }
+        this.checkLedToggle(chatInput)
       }
       else if(chatInput.includes('ความเข้มแสงขณะนี้')) {
         return this.getLightIntensity()
@@ -92,7 +78,7 @@ export class ChatService {
     )
   }
 
-  getLedStatus(chatInput: string){
+  checkLedToggle(chatInput: string){
     this.kidBrightService.getLedStatus().subscribe(
       (data: LEDModel) => {
         const Status = data.value
