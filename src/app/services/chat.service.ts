@@ -5,6 +5,7 @@ import { KidBrightService } from './kid-bright.service';
 import { MessageService } from './message.service';
 import { RepollGetMessageService } from './repoll-get-message.service';
 import { DatetimeModel } from '../models/datetime.model';
+import { LEDModel } from '../models/led.model';
 import { BotMessage } from '../constants/bot-message';
 
 @Injectable({
@@ -36,20 +37,21 @@ export class ChatService {
         this.repollGetMessageService.notify()
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
-        if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
-          this.messageService.setMessage('bot', BotMessage.LightIsOn, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
-          this.repollGetMessageService.notify()
-        }
-        else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
-          return this.toggleLed(true)
-        }
-        else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
-          return this.toggleLed(false)
-        }
-        else{
-          this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
-          this.repollGetMessageService.notify()
-        }
+        this.getLedStatus(chatInput)
+        // if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
+        //   this.messageService.setMessage('bot', BotMessage.LightIsOn, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+        //   this.repollGetMessageService.notify()
+        // }
+        // else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
+        //   return this.toggleLed("ON")
+        // }
+        // else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
+        //   return this.toggleLed("OFF")
+        // }
+        // else{
+        //   this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+        //   this.repollGetMessageService.notify()
+        // }
       }
       else if(chatInput.includes('ความเข้มแสงขณะนี้')) {
         return this.getLightIntensity()
@@ -90,8 +92,30 @@ export class ChatService {
     )
   }
 
-  toggleLed(setStatus: boolean) {
-    const status = (setStatus ? "ON":"OFF" )
+  getLedStatus(chatInput: string){
+    this.kidBrightService.getLedStatus().subscribe(
+      (data: LEDModel) => {
+        const Status = data.value
+        this.LEDstatus = (Status=="ON"? true:false)
+        if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
+          this.messageService.setMessage('bot', BotMessage.LightIsOn, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+          this.repollGetMessageService.notify()
+        }
+        else if(chatInput.includes('เปิดไฟ') && this.LEDstatus == false){
+          return this.toggleLed("ON")
+        }
+        else if (chatInput.includes('ปิดไฟ') && this.LEDstatus == true) {
+          return this.toggleLed("OFF")
+        }
+        else{
+          this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
+          this.repollGetMessageService.notify()
+        }
+      }
+    )
+  }
+
+  toggleLed(status: String) {
     this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {

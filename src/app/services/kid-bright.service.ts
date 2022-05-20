@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { TempModel } from '../models/temp.model';
 import { LightIntensityModel } from '../models/light-intensity.model';
 import { environment } from 'src/environments/environment';
+import { LEDModel } from '../models/led.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,11 @@ export class KidBrightService {
     const url = `${environment.kidBrightApi}/temp`
     const body = { "temp": temp }
     return this.http.post(url, JSON.stringify(body))
+  }
+
+  getLedStatus(): Observable<LEDModel> {
+    const url = `${environment.kidBrightApi}/led`
+    return this.http.get<LEDModel>(url)
   }
 
   toggleLed(LEDstatus: String) {
