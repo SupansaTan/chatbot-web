@@ -37,15 +37,26 @@ export class ChatService {
         this.repollGetMessageService.notify()
       }
       else if(chatInput == 'ตั้งเวลาเปิด/ปิดไฟ') {
+        this.messageService.setMessage('bot', 'loading')
         this.kidBrightService.getLedStatus().subscribe(
           (status) => {
+            this.messageService.popMessage()
             this.messageService.setMessage('bot', "ตั้งเวลา" + (status.value=="ON"? 'ปิด':'เปิด') + 'ไฟ')
+          },
+          (err) => {
+            this.messageService.popMessage()
+            this.messageService.setMessage('bot', 'อ๊ะ เกิดข้อผิดพลาดในการเช็คสถานะไฟ กรุณาลองใหม่อีกครั้งในภายหลัง')
+          },
+          () => {
+            this.repollGetMessageService.notify()
           }
         )
       }
       else if(chatInput == 'ตั้งเวลาเปิดไฟ' || chatInput == 'ตั้งเวลาปิดไฟ') {
+        this.messageService.setMessage('bot', 'loading')
         this.kidBrightService.getLedStatus().subscribe(
           (status) => {
+            this.messageService.popMessage()
             const ledStatus = (status.value == "ON"? true:false)
             if(chatInput.includes('ตั้งเวลาเปิดไฟ')) {
               if(ledStatus) {
@@ -63,6 +74,13 @@ export class ChatService {
                 this.messageService.setMessage('bot', "ตั้งเวลาปิดไฟ")
               }
             }
+          },
+          (err) => {
+            this.messageService.popMessage()
+            this.messageService.setMessage('bot', 'อ๊ะ เกิดข้อผิดพลาดในการเช็คสถานะไฟ กรุณาลองใหม่อีกครั้งในภายหลัง')
+          },
+          () => {
+            this.repollGetMessageService.notify()
           }
         )
       }
@@ -112,6 +130,7 @@ export class ChatService {
     this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.getLedStatus().subscribe(
       (data: LEDModel) => {
+        this.messageService.popMessage()
         const Status = data.value
         this.LEDstatus = (Status=="ON"? true:false)
         if (chatInput.includes('เปิดไฟ') && this.LEDstatus == true) {
