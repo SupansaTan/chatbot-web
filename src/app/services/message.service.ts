@@ -26,6 +26,10 @@ export class MessageService {
     return this.msg_list
   }
 
+  getLength(): number {
+    return this.msg_list.length
+  }
+
   setMessage(author: string, value: string, command?: string) {
     if(command) {
       this.msg_list.push({
@@ -42,7 +46,12 @@ export class MessageService {
     }
   }
 
-  popMessage() {
-    this.msg_list.pop()
+  popMessage(index?: number) {
+    if(index && index > -1) {
+      this.msg_list.splice(index, 1)
+    }
+    else {
+      this.msg_list.pop()
+    }
   }
 }

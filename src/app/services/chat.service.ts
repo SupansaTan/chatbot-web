@@ -201,6 +201,7 @@ export class ChatService {
   }
 
   setTimer(input: string){
+    this.messageService.popMessage(this.messageService.getLength()-2)
     this.messageService.setMessage('bot', 'loading')
     let hour,min,sec,time: number = 0
     let message: string
@@ -239,6 +240,8 @@ export class ChatService {
   }
 
   setDatetimeToggleLED(ledStatus: string, datetime: string) {
+    this.messageService.popMessage()
+    this.messageService.setMessage('bot', 'loading')
     const status = ledStatus == "ON" ? 'เปิด':'ปิด'
     this.kidBrightService.setDatetimeToggleLED(ledStatus, datetime).subscribe(
       (res) => {

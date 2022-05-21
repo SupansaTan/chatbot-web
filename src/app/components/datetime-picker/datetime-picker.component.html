@@ -1,9 +1,10 @@
 <div class="row px-2 mt-2">
   <div class="col-7 ps-1">
-    <input class="form-control border-0 rounded-3 shadow-none bg-grey" type="date" id="start" [(ngModel)]="datetime">
+    <input class="form-control border-0 rounded-3 shadow-none bg-grey" type="date" id="start" [min]="datetime" [(ngModel)]="datetime">
   </div>
-  <div class="col ps-0 pe-1">
+  <div class="col-5 ps-0 pe-1">
     <input class="form-control border-0 rounded-3 shadow-none bg-grey" type="time" id="time" [(ngModel)]="timeSelect">
   </div>
 </div>
+<p *ngIf="errorMessage" class="text-danger mt-1 mb-0">{{ errorMessage }}</p>
 <button class="btn btn-primary w-100 py-1 rounded-3 mt-2" (click)="setTimeoutToggleLed()">ตั้งเวลา</button>

@@ -12,6 +12,7 @@ export class DatetimePickerComponent implements OnInit {
   datetime: string = ''
   today: Date = new Date()
   timeSelect: string = ''
+  errorMessage: string = ''
   @Input() ledStatus: boolean = false;
 
   constructor(private chatService: ChatService) { }
@@ -32,8 +33,17 @@ export class DatetimePickerComponent implements OnInit {
     const year = this.datetime.substring(2, 4)
     const month = this.datetime.substring(5, 7)
     const day = this.datetime.substring(8)
-    const datetime = [day, month, year].join('/') + " " + this.timeSelect
-    const ledStatusStr = this.ledStatus ? "ON":"OFF"
-    this.chatService.setDatetimeToggleLED(ledStatusStr, datetime)
+    const setDatetime = new Date(this.datetime + " " + this.timeSelect)
+    const now = new Date()
+
+    if(setDatetime > now) {
+      this.errorMessage = ''
+      const datetime = [day, month, year].join('/') + " " + this.timeSelect
+      const ledStatusStr = this.ledStatus ? "ON":"OFF"
+      this.chatService.setDatetimeToggleLED(ledStatusStr, datetime)
+    }
+    else {
+      this.errorMessage = 'ไม่สามารถตั้งเวลานี้ได้ โปรดลองใหม่อีกครั้ง'
+    }
   }
 }
