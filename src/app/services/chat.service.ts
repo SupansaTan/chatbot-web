@@ -109,6 +109,7 @@ export class ChatService {
   }
 
   checkLedToggle(chatInput: string){
+    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.getLedStatus().subscribe(
       (data: LEDModel) => {
         const Status = data.value
@@ -127,12 +128,18 @@ export class ChatService {
           this.messageService.setMessage('bot', BotMessage.LightIsOff, this.LEDstatus? 'เปิดไฟ':'ปิดไฟ')
           this.repollGetMessageService.notify()
         }
+      },
+      (err) => {
+        this.messageService.popMessage()
+        this.messageService.setMessage('bot', 'อ๊ะ เกิดข้อผิดพลาดในการเช็คสถานะไฟ กรุณาลองใหม่อีกครั้งในภายหลัง')
+      },
+      () => {
+        this.repollGetMessageService.notify()
       }
     )
   }
 
   toggleLed(status: String) {
-    this.messageService.setMessage('bot', 'loading')
     this.kidBrightService.toggleLed(status).subscribe(
       (res) => {
         this.LEDstatus = !this.LEDstatus
