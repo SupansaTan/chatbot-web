@@ -14,6 +14,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 })
 export class MessageComponent implements OnInit, OnDestroy  {
   private repollSubscription: Subscription = new Subscription;
+  botCheckMessage: Array<string> = ['คำสั่ง', 'นับถอยหลัง', 'loading', 'ตั้งเวลาปิดไฟ', 'ตั้งเวลาเปิดไฟ']
   commands: Array<CommandModel> = Commands;
   msg_list: Array<MessageModel> = []
   time: NgbTimeStruct = {hour: 0, minute: 0, second: 0};

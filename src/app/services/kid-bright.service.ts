@@ -60,4 +60,10 @@ export class KidBrightService {
     const body = { "time": second }
     return this.http.post(url, JSON.stringify(body))
   }
+
+  setDatetimeToggleLED(ledStatus: string, datetime: string) {
+    const url = `${environment.kidBrightApi}/setDateTimeLed`
+    const body = { "led": ledStatus, "datetime": datetime }
+    return this.http.post(url, JSON.stringify(body))
+  }
 }

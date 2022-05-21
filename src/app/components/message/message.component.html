@@ -1,7 +1,7 @@
 <div #messageContainer class="h-100" style="overflow-y: auto;">
   <div #messageWrapper *ngFor="let item of msg_list" class="px-2">
     <!-- bot -->
-    <div *ngIf="item.author == 'bot' && item.message != 'คำสั่ง' && item.message != 'นับถอยหลัง' && item.message != 'loading' && !item.type"
+    <div *ngIf="item.author == 'bot' && !botCheckMessage.includes(item.message) && !item.type"
       class="d-flex justify-content-start align-items-center py-2">
       <div class="rounded-circle bg-blue me-2 px-2 py-1">
         <i class="bi bi-robot text-white"></i>
@@ -62,6 +62,18 @@
         <h5 class="text-center">ตั้งเวลานับถอยหลัง</h5>
         <ngb-timepicker [(ngModel)]="time" [seconds]="true"></ngb-timepicker>
         <button class="btn btn-primary w-100 py-1 rounded-3 mt-2" (click)="setTimer()">ตั้งเวลา</button>
+      </div>
+    </div>
+
+    <!-- bot: set datetime for toggle LED -->
+    <div *ngIf="item.author == 'bot' && (item.message == 'ตั้งเวลาปิดไฟ' || item.message == 'ตั้งเวลาเปิดไฟ') && !item.type" class="d-flex justify-content-start align-items-start py-2">
+      <div class="rounded-circle bg-blue me-2 px-2 py-1">
+        <i class="bi bi-robot text-white"></i>
+      </div>
+
+      <div class="bg-lightGrey p-3 rounded-chat col-4">
+        <h5 class="text-center">{{ item.message }}</h5>
+        <app-datetime-picker [ledStatus]="(item.message=='ตั้งเวลาปิดไฟ')? false:true"></app-datetime-picker>
       </div>
     </div>
 

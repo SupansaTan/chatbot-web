@@ -18,7 +18,7 @@ export class ChatService {
   constructor(private kidBrightService: KidBrightService,
               private messageService: MessageService,
               private repollGetMessageService: RepollGetMessageService) {
-    this.keyword = ['คำสั่ง','ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง', 'เวลาขณะนี้']
+    this.keyword = ['คำสั่ง','ตั้งอุณหภูมิ', 'อุณหภูมิขณะนี้', 'เปิดไฟ', 'ปิดไฟ', 'ความเข้มแสงขณะนี้', 'นับถอยหลัง', 'เวลาขณะนี้', 'ตั้งเวลาเปิด/ปิดไฟ', 'ตั้งเวลาเปิดไฟ', 'ตั้งเวลาปิดไฟ']
   }
 
   findKeyword(chatInput: string) {
@@ -35,6 +35,36 @@ export class ChatService {
       else if(chatInput.includes('ตั้งอุณหภูมิ')) {
         this.messageService.setMessage('bot', BotMessage.setTemp)
         this.repollGetMessageService.notify()
+      }
+      else if(chatInput == 'ตั้งเวลาเปิด/ปิดไฟ') {
+        this.kidBrightService.getLedStatus().subscribe(
+          (status) => {
+            this.messageService.setMessage('bot', "ตั้งเวลา" + (status.value=="ON"? 'ปิด':'เปิด') + 'ไฟ')
+          }
+        )
+      }
+      else if(chatInput == 'ตั้งเวลาเปิดไฟ' || chatInput == 'ตั้งเวลาปิดไฟ') {
+        this.kidBrightService.getLedStatus().subscribe(
+          (status) => {
+            const ledStatus = (status.value == "ON"? true:false)
+            if(chatInput.includes('ตั้งเวลาเปิดไฟ')) {
+              if(ledStatus) {
+                this.messageService.setMessage('bot', BotMessage.LightIsOn, 'ตั้งเวลาเปิดไฟ')
+              }
+              else {
+                this.messageService.setMessage('bot', "ตั้งเวลาเปิดไฟ")
+              }
+            }
+            else {
+              if(!ledStatus) {
+                this.messageService.setMessage('bot', BotMessage.LightIsOff, 'ตั้งเวลาปิดไฟ')
+              }
+              else {
+                this.messageService.setMessage('bot', "ตั้งเวลาปิดไฟ")
+              }
+            }
+          }
+        )
       }
       else if(chatInput.includes('เปิดไฟ') || chatInput.includes('ปิดไฟ')) {
         this.checkLedToggle(chatInput)
@@ -201,6 +231,23 @@ export class ChatService {
       (err) => {
         this.messageService.popMessage()
         this.messageService.setMessage('bot', BotMessage.setTimerFailed)
+      },
+      () => {
+        this.repollGetMessageService.notify()
+      }
+    )
+  }
+
+  setDatetimeToggleLED(ledStatus: string, datetime: string) {
+    const status = ledStatus == "ON" ? 'เปิด':'ปิด'
+    this.kidBrightService.setDatetimeToggleLED(ledStatus, datetime).subscribe(
+      (res) => {
+        this.messageService.popMessage()
+        this.messageService.setMessage('bot', datetime, 'ตั้งเวลา' + status + 'ไฟเรียบร้อย')
+      },
+      (err) => {
+        this.messageService.popMessage()
+        this.messageService.setMessage('bot', BotMessage.setDatetimeToggleLedFailed)
       },
       () => {
         this.repollGetMessageService.notify()

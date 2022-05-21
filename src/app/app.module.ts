@@ -10,13 +10,15 @@ import { ChatComponent } from './components/chat/chat.component';
 import { MessageComponent } from './components/message/message.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DatetimePickerComponent } from './components/datetime-picker/datetime-picker.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BarComponent,
     ChatComponent,
-    MessageComponent
+    MessageComponent,
+    DatetimePickerComponent
   ],
   imports: [
     BrowserModule,

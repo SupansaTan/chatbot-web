@@ -30,6 +30,10 @@ export let Commands = [
   },
   {
     title: 'นับถอยหลัง',
-    icon: 'bi-alarm-fill'
+    icon: 'bi-stopwatch'
+  },
+  {
+    title: 'ตั้งเวลาเปิด/ปิดไฟ',
+    icon: 'bi-alarm'
   }
 ]
